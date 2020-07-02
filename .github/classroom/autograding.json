@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Automated tests",
+      "setup": "yarn install",
+      "run": "CI=true yarn test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 5,
+      "points": null
+    }
+  ]
+}
