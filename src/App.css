@@ -1,38 +1,91 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+.App-logo{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-height: 24px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  font-family: 'Lato', sans-serif;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.hidden{
+  display: none;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Tasks-list{
   display: flex;
   flex-direction: column;
+  color: #2D3748;
+  max-width: 600px;
+  margin: auto; 
+  margin-top: 100px;
+}
+.section__title{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.Task{
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border-bottom: 1px #000000 solid;
+  padding: 16px 0px;
+}
+.Task__body{
+  font-size: 17px;
+  margin-left: 12px;
 }
 
-.App-link {
-  color: #61dafb;
+.Task-radio{
+  border: 7px #000000 solid;
+  height: 20px;
+  font-size: 50px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Task-add{
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  max-width: 105px;
+}
+.btn-undefined{
+  font-size: 17px;
+  background-color: transparent;
+  border:none;
+  padding: 4px;
+}
+
+.btn-undefined:hover{
+ border: 1px #000000 solid;
+ border-radius: 5px;
+}
+.create-task-form{
+  margin-top: 20px;
+}
+.create-task-form__input{
+  width: 100%;
+  border: 1px #1A202C solid;
+  border-radius: 4px;
+  height: 34px;
+  font-size: 18px;
+  padding-left: 8px;
+}
+.create-task-form__buttons{
+  margin-top: 8px;
+}
+
+.create-task__action{
+  background: #2D3748;
+  color: #ffffff;
+  border: 1px #2D3748 solid;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 17px;
+}
+.create-task__action:hover{
+  background-color: transparent;
+  color: #2D3748;
+}
+.create-task__cancel{
+  margin-left: 4px;
 }
