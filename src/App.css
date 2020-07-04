@@ -34,6 +34,7 @@ body {
 .Task__body {
   font-size: 17px;
   margin-left: 12px;
+  cursor:pointer;
 }
 
 .task-radios__completed {
@@ -109,11 +110,6 @@ body {
 }
 
 .task-completed{
-  color: grey;
-  border-bottom: 1px grey solid;
-}
-
-.task-completed img{
   opacity: .5;
 }
 

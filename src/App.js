@@ -9,26 +9,6 @@ const Logo = () => {
   return <img className="App-logo" src={logo} alt="logo" />;
 };
 
-const Task = ({ todo, onCheck }) => {
-  return (
-    <div className="Task">
-      <div className="task-radios" onClick={() => onCheck(todo.id)}>
-        <img
-          className="task-radios__uncompleted"
-          alt="uncompleted"
-          src={taskUncompletedIcon}
-        />
-        <img
-          className="task-radios__completed"
-          alt="completed"
-          src={taskCompletedIcon}
-        />
-      </div>
-      <p className="Task__body">{todo.task}</p>
-    </div>
-  );
-};
-
 const TaskCompleted = ({ todo }) => {
   return (
     <div className="Task task-completed">
@@ -92,6 +72,28 @@ const CreateTask = ({ tasks, setTasks, addTask, setAddTask }) => {
         </button>
       </div>
     </form>
+  );
+};
+
+const Task = ({ todo, onCheck }) => {
+  
+
+  return (
+    <div className="Task">
+      <div className="task-radios" onClick={() => onCheck(todo.id)}>
+        <img
+          className="task-radios__uncompleted"
+          alt="uncompleted"
+          src={taskUncompletedIcon}
+        />
+        <img
+          className="task-radios__completed"
+          alt="completed"
+          src={taskCompletedIcon}
+        />
+      </div>
+      <p className="Task__body" >{todo.task}</p>
+    </div>
   );
 };
 
