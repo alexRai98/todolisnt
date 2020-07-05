@@ -9,7 +9,6 @@ const Logo = () => {
   return <img className="App-logo" src={logo} alt="logo" />;
 };
 
-
 const CreateForm = ({
   hiddeForm,
   onSend,
@@ -84,22 +83,11 @@ const CreateTask = ({ tasks, setTasks, addTask, setAddTask }) => {
   );
 };
 
-const TaskCompleted = ({ todo }) => {
-  return (
-    <div className="Task task-completed">
-      <img alt="completed" src={taskCompletedIcon} />
-      <p className="Task__body task-completed__body">{todo.task}</p>
-    </div>
-  );
-};
-
-const Task = ({ todo, onCheck, tasks, setTasks }) => {
+const Task = ({ todo, onCheck, tasks, setTasks, isTaskCompleted }) => {
   const [input, setInput] = useState(todo.task);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const hiddeForm = () => {
-    return {};
-  };
+  const hiddeForm = () => {};
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -129,10 +117,13 @@ const Task = ({ todo, onCheck, tasks, setTasks }) => {
       />
     );
   };
-  const TasBody = () => {
+  const TaskBody = () => {
+    const classBody = `Task__body ${
+      isTaskCompleted ? "task-completed__body" : ""
+    }`;
     return (
       <p
-        className="Task__body"
+        className={classBody}
         onClick={() => {
           setIsUpdate(true);
         }}
@@ -141,16 +132,21 @@ const Task = ({ todo, onCheck, tasks, setTasks }) => {
       </p>
     );
   };
+  const RadioUmcompleted = () => {
+    return (
+      <img
+        className="task-radios__uncompleted"
+        alt="uncompleted"
+        src={taskUncompletedIcon}
+      />
+    );
+  };
   const RenderRadios = () => {
     return (
       <div className="task-radios" onClick={() => onCheck(todo.id)}>
+        {isTaskCompleted ? null : <RadioUmcompleted />}
         <img
-          className="task-radios__uncompleted"
-          alt="uncompleted"
-          src={taskUncompletedIcon}
-        />
-        <img
-          className="task-radios__completed"
+          className={isTaskCompleted ? null : "task-radios__completed"}
           alt="completed"
           src={taskCompletedIcon}
         />
@@ -160,8 +156,8 @@ const Task = ({ todo, onCheck, tasks, setTasks }) => {
 
   return (
     <div className="Task">
-      {isUpdate ? null:<RenderRadios />}
-      {isUpdate ? <RederForm /> : <TasBody />}
+      {isUpdate ? null : <RenderRadios />}
+      {isUpdate ? <RederForm /> : <TaskBody />}
     </div>
   );
 };
@@ -212,6 +208,7 @@ function App() {
             key={task.id}
             tasks={tasks}
             setTasks={setTasks}
+            isTaskCompleted={false}
           />
         ))}
 
@@ -237,7 +234,14 @@ function App() {
         </a>
         <div style={showCompleted ? { display: "block" } : { display: "none" }}>
           {tasksCompleted().map((task) => (
-            <TaskCompleted todo={task} key={task.id} />
+            <Task
+              todo={task}
+              onCheck={hundleCompleted}
+              key={task.id}
+              tasks={tasks}
+              setTasks={setTasks}
+              isTaskCompleted={true}
+            />
           ))}
         </div>
       </section>
