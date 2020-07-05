@@ -9,23 +9,16 @@ const Logo = () => {
   return <img className="App-logo" src={logo} alt="logo" />;
 };
 
-const TaskCompleted = ({ todo }) => {
+const CreateForm = ({
+  hiddeForm,
+  onSend,
+  cancelForm,
+  shangeInput,
+  input,
+  button,
+}) => {
   return (
-    <div className="Task task-completed">
-      <img alt="completed" src={taskCompletedIcon} />
-      <p className="Task__body task-completed__body">{todo.task}</p>
-    </div>
-  );
-};
-
-const CreateForm = ({hiddeForm,onSend,setAddTask,shangeInput,input,button}) => {
-
-  return (
-    <form
-      style={hiddeForm()}
-      className="create-task-form"
-      onSubmit={onSend}
-    >
+    <form style={hiddeForm()} className="create-task-form" onSubmit={onSend}>
       <input
         value={input}
         onChange={shangeInput}
@@ -40,7 +33,7 @@ const CreateForm = ({hiddeForm,onSend,setAddTask,shangeInput,input,button}) => {
           {button}
         </button>
         <button
-          onClick={() => setAddTask(false)}
+          onClick={() => cancelForm(false)}
           type="button"
           className="create-task__cancel btn-undefined"
         >
@@ -78,41 +71,93 @@ const CreateTask = ({ tasks, setTasks, addTask, setAddTask }) => {
     setInput("");
   };
 
-  return <CreateForm
-  button={"Add"}
-  hiddeForm={hiddeCreateForm}
-  input={input}
-  shangeInput={handleInputChange} 
-  onSend={handleSubmit} 
-  setAddTask={setAddTask}/>;
+  return (
+    <CreateForm
+      button={"Add"}
+      hiddeForm={hiddeCreateForm}
+      input={input}
+      shangeInput={handleInputChange}
+      onSend={handleSubmit}
+      cancelForm={setAddTask}
+    />
+  );
 };
 
-const Task = ({ todo, onCheck }) => {
-  //conts [click,setClick] = useState(false);
-  const hundleRederForm = () => {
-    console.log("edit")
+const Task = ({ todo, onCheck, tasks, setTasks, isTaskCompleted }) => {
+  const [input, setInput] = useState(todo.task);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const hiddeForm = () => {};
+
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
   };
 
-  return (
-    <div className="Task">
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newTasks = tasks.map((task) => {
+      if (task.id === todo.id) {
+        return { ...task, task: input };
+      }
+      return task;
+    });
+    setTasks(newTasks);
+    setInput("");
+    setIsUpdate(false);
+  };
+  const RederForm = () => {
+    return (
+      <CreateForm
+        button={"Update"}
+        hiddeForm={hiddeForm}
+        input={input}
+        shangeInput={handleInputChange}
+        onSend={handleSubmit}
+        cancelForm={setIsUpdate}
+      />
+    );
+  };
+  const TaskBody = () => {
+    const classBody = `Task__body ${
+      isTaskCompleted ? "task-completed__body" : ""
+    }`;
+    return (
+      <p
+        className={classBody}
+        onClick={() => {
+          setIsUpdate(true);
+        }}
+      >
+        {todo.task}
+      </p>
+    );
+  };
+  const RadioUmcompleted = () => {
+    return (
+      <img
+        className="task-radios__uncompleted"
+        alt="uncompleted"
+        src={taskUncompletedIcon}
+      />
+    );
+  };
+  const RenderRadios = () => {
+    return (
       <div className="task-radios" onClick={() => onCheck(todo.id)}>
+        {isTaskCompleted ? null : <RadioUmcompleted />}
         <img
-          className="task-radios__uncompleted"
-          alt="uncompleted"
-          src={taskUncompletedIcon}
-        />
-        <img
-          className="task-radios__completed"
+          className={isTaskCompleted ? null : "task-radios__completed"}
           alt="completed"
           src={taskCompletedIcon}
         />
       </div>
-      <p
-        className="Task__body"
-        onClick={hundleRederForm}
-      >
-        {todo.task}
-      </p>
+    );
+  };
+
+  return (
+    <div className={isTaskCompleted?"Task task-completed":"Task"}>
+      {isUpdate ? null : <RenderRadios />}
+      {isUpdate ? <RederForm /> : <TaskBody />}
     </div>
   );
 };
@@ -157,7 +202,14 @@ function App() {
         <h2 className="section__title">Todos</h2>
 
         {tasksUncompleted().map((task) => (
-          <Task todo={task} onCheck={hundleCompleted} key={task.id} />
+          <Task
+            todo={task}
+            onCheck={hundleCompleted}
+            key={task.id}
+            tasks={tasks}
+            setTasks={setTasks}
+            isTaskCompleted={false}
+          />
         ))}
 
         <button
@@ -182,7 +234,14 @@ function App() {
         </a>
         <div style={showCompleted ? { display: "block" } : { display: "none" }}>
           {tasksCompleted().map((task) => (
-            <TaskCompleted todo={task} key={task.id} />
+            <Task
+              todo={task}
+              onCheck={hundleCompleted}
+              key={task.id}
+              tasks={tasks}
+              setTasks={setTasks}
+              isTaskCompleted={true}
+            />
           ))}
         </div>
       </section>
