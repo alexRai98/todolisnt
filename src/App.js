@@ -88,7 +88,10 @@ const CreateTask = ({ tasks, setTasks, addTask, setAddTask }) => {
 };
 
 const Task = ({ todo, onCheck }) => {
-  const hundleRederForm = () => {};
+  //conts [click,setClick] = useState(false);
+  const hundleRederForm = () => {
+    console.log("edit")
+  };
 
   return (
     <div className="Task">
@@ -106,9 +109,7 @@ const Task = ({ todo, onCheck }) => {
       </div>
       <p
         className="Task__body"
-        onClick={() => {
-          hundleRederForm();
-        }}
+        onClick={hundleRederForm}
       >
         {todo.task}
       </p>
@@ -172,8 +173,9 @@ function App() {
           setAddTask={setAddTask}
         />
         <a
+          href="https://google.com"
           className="show-task-completed"
-          onClick={() => hundleShowCompleted()}
+          onClick={hundleShowCompleted}
         >
           {showCompleted ? "Hidden" : "Show completed"}
         </a>

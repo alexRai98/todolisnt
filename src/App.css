@@ -40,6 +40,9 @@ body {
 .task-radios__completed {
   display: none;
 }
+.task-radios{
+  cursor: pointer;
+}
 
 .task-radios:hover .task-radios__completed {
   display: inline;
