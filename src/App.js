@@ -145,7 +145,8 @@ function App() {
     setTasks(newTasks);
   };
 
-  const hundleShowCompleted = () => {
+  const hundleShowCompleted = (e) => {
+    e.preventDefault();
     setShowcompleted(!showCompleted);
   };
 
