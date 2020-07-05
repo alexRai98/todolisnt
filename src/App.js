@@ -155,7 +155,7 @@ const Task = ({ todo, onCheck, tasks, setTasks, isTaskCompleted }) => {
   };
 
   return (
-    <div className="Task">
+    <div className={isTaskCompleted?"Task task-completed":"Task"}>
       {isUpdate ? null : <RenderRadios />}
       {isUpdate ? <RederForm /> : <TaskBody />}
     </div>
