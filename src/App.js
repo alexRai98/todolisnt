@@ -9,23 +9,17 @@ const Logo = () => {
   return <img className="App-logo" src={logo} alt="logo" />;
 };
 
-const TaskCompleted = ({ todo }) => {
-  return (
-    <div className="Task task-completed">
-      <img alt="completed" src={taskCompletedIcon} />
-      <p className="Task__body task-completed__body">{todo.task}</p>
-    </div>
-  );
-};
 
-const CreateForm = ({hiddeForm,onSend,setAddTask,shangeInput,input,button}) => {
-
+const CreateForm = ({
+  hiddeForm,
+  onSend,
+  cancelForm,
+  shangeInput,
+  input,
+  button,
+}) => {
   return (
-    <form
-      style={hiddeForm()}
-      className="create-task-form"
-      onSubmit={onSend}
-    >
+    <form style={hiddeForm()} className="create-task-form" onSubmit={onSend}>
       <input
         value={input}
         onChange={shangeInput}
@@ -40,7 +34,7 @@ const CreateForm = ({hiddeForm,onSend,setAddTask,shangeInput,input,button}) => {
           {button}
         </button>
         <button
-          onClick={() => setAddTask(false)}
+          onClick={() => cancelForm(false)}
           type="button"
           className="create-task__cancel btn-undefined"
         >
@@ -78,23 +72,77 @@ const CreateTask = ({ tasks, setTasks, addTask, setAddTask }) => {
     setInput("");
   };
 
-  return <CreateForm
-  button={"Add"}
-  hiddeForm={hiddeCreateForm}
-  input={input}
-  shangeInput={handleInputChange} 
-  onSend={handleSubmit} 
-  setAddTask={setAddTask}/>;
+  return (
+    <CreateForm
+      button={"Add"}
+      hiddeForm={hiddeCreateForm}
+      input={input}
+      shangeInput={handleInputChange}
+      onSend={handleSubmit}
+      cancelForm={setAddTask}
+    />
+  );
 };
 
-const Task = ({ todo, onCheck }) => {
-  //conts [click,setClick] = useState(false);
-  const hundleRederForm = () => {
-    console.log("edit")
+const TaskCompleted = ({ todo }) => {
+  return (
+    <div className="Task task-completed">
+      <img alt="completed" src={taskCompletedIcon} />
+      <p className="Task__body task-completed__body">{todo.task}</p>
+    </div>
+  );
+};
+
+const Task = ({ todo, onCheck, tasks, setTasks }) => {
+  const [input, setInput] = useState(todo.task);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const hiddeForm = () => {
+    return {};
   };
 
-  return (
-    <div className="Task">
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newTasks = tasks.map((task) => {
+      if (task.id === todo.id) {
+        return { ...task, task: input };
+      }
+      return task;
+    });
+    setTasks(newTasks);
+    setInput("");
+    setIsUpdate(false);
+  };
+  const RederForm = () => {
+    return (
+      <CreateForm
+        button={"Update"}
+        hiddeForm={hiddeForm}
+        input={input}
+        shangeInput={handleInputChange}
+        onSend={handleSubmit}
+        cancelForm={setIsUpdate}
+      />
+    );
+  };
+  const TasBody = () => {
+    return (
+      <p
+        className="Task__body"
+        onClick={() => {
+          setIsUpdate(true);
+        }}
+      >
+        {todo.task}
+      </p>
+    );
+  };
+  const RenderRadios = () => {
+    return (
       <div className="task-radios" onClick={() => onCheck(todo.id)}>
         <img
           className="task-radios__uncompleted"
@@ -107,12 +155,13 @@ const Task = ({ todo, onCheck }) => {
           src={taskCompletedIcon}
         />
       </div>
-      <p
-        className="Task__body"
-        onClick={hundleRederForm}
-      >
-        {todo.task}
-      </p>
+    );
+  };
+
+  return (
+    <div className="Task">
+      {isUpdate ? null:<RenderRadios />}
+      {isUpdate ? <RederForm /> : <TasBody />}
     </div>
   );
 };
@@ -157,7 +206,13 @@ function App() {
         <h2 className="section__title">Todos</h2>
 
         {tasksUncompleted().map((task) => (
-          <Task todo={task} onCheck={hundleCompleted} key={task.id} />
+          <Task
+            todo={task}
+            onCheck={hundleCompleted}
+            key={task.id}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
         ))}
 
         <button
