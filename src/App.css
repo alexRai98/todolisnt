@@ -3,12 +3,6 @@ a{
   text-decoration: none;
 }
 
-.App-logo {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  max-height: 24px;
-}
 
 body {
   font-family: "Lato", sans-serif;
@@ -76,6 +70,7 @@ body {
 }
 .create-task-form {
   margin-top: 20px;
+  width: 100%;
 }
 .create-task-form__input {
   width: 100%;

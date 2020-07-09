@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import logo from "./images/todoisnt-logo.png";
 import plusIcon from "./images/icons/plus.svg";
 import taskCompletedIcon from "./images/icons/checkbox-checked.svg";
 import taskUncompletedIcon from "./images/icons/checkbox.svg";
+import {LogoComponent} from './components/components'
 import "./App.css";
 
-const Logo = () => {
-  return <img className="App-logo" src={logo} alt="logo" />;
-};
+
 
 const CreateForm = ({
   hiddeForm,
@@ -17,6 +15,7 @@ const CreateForm = ({
   input,
   button,
 }) => {
+  console.log(input)
   return (
     <form style={hiddeForm()} className="create-task-form" onSubmit={onSend}>
       <input
@@ -197,7 +196,7 @@ function App() {
 
   return (
     <main className="App">
-      <Logo />
+      <LogoComponent/>
       <section className="Tasks-list">
         <h2 className="section__title">Todos</h2>
 
